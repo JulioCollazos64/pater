@@ -1,139 +1,32 @@
-parse <- function(str, encodePath = NA) {
-  browser()
-  chars <- strsplit(str, "")[[1]]
-  len <- length(chars)
-  tokens <- list()
-  name <- function() {
-    browser()
-    value <- ""
-    while (i <= len) {
-      if (chars[i] == '"') {
-        quoteStart <- i
-        i <<- i + 1
-        while (i <= len) {
-          if (chars[i] == '"') {
-            i <<- i + 1
-            quoteStart <- 0
-            break
-          }
-          value <- paste0(value, chars[i])
-          i <<- i + 1
-        }
-      }
-      i <<- i + 1
-    }
-    if (identical(value, "")) {
-      stop("Missing parameter name at index ", i, call. = FALSE)
-    }
-    value
-  }
-  i <- 1
-  while (i <= len) {
-    value <- chars[i]
-    type <- SIMPLE_TOKENS[value]
-
-    if (!is.na(type)) {
-      l <- list(
-        type = type,
-        index = i,
-        value = value
-      )
-      tokens <- append(tokens, list(l))
-      i <- i + 1
-    }
-
-    switch(
-      value,
-      ":" = {
-        l <- list(
-          type = "param",
-          index = i,
-          value = name()
-        )
-        tokens <- append(tokens, list(l))
-        i <- i + 1
-      },
-      "*" = {
-        l <- list(
-          type = "wildcard",
-          index = i,
-          value = name()
-        )
-        tokens <- append(tokens, list(l))
-        i <- i + 1
-      },
-      "\\" = {
-        l <- list(
-          type = "escape",
-          index = i,
-          value = value
-        )
-        tokens <- append(tokens, list(l))
-        i <- i + 1
-      },
-      {
-        l <- list(
-          type = "char",
-          index = i,
-          value = value
-        )
-        tokens <- append(tokens, list(l))
-        i <- i + 1
-      }
-    )
-  }
-
-  tokens <- append(
-    tokens,
-    list(
-      type = "end",
-      index = len + 1,
-      value = ""
-    )
-  )
-  tokens
-}
-# For the time being, let's just think we have one **segment**
-
-x <- '/:"hola "'
-# {
-#   path: '/:"0"',
-#   expected: new TokenData(
-#     [
-#       { type: "text", value: "/" },
-#       { type: "param", name: "0" },
-#     ],
-#     '/:"0"',
-#   ),
-# }
-x
-
+#' Decompose a path
+#' @param x A character path of length 1.
+#' @export
 parse <- function(x) {
-  # browser()
   chars <- strsplit(x, "")[[1]]
   stopifnot(nchar(x) == length(chars))
+  stopifnot(length(x) == 1)
   len <- nchar(x)
   tokens <- vector(mode = "list")
 
   name <- function(index, char, len) {
-    # browser()
-    index <- index + 1
     value <- ""
     result <- ""
 
     stopifnot("Not enough data!" = !is.na(char[index]))
 
     if (!identical(char[index], '"')) {
-      for (j in index:len) {
-        if (identical(char[j], ":")) {
+      repeat {
+        value <- paste0(value, char[index])
+        index <- index + 1
+
+        if (identical(char[index], ":") || is.na(char[index])) {
           break
         }
-        value <- paste0(value, char[j])
       }
       result <- list(
         index = list(
-          start = index,
-          end = j
+          start = index, # solve this later
+          end = index
         ),
         value = value
       )
@@ -150,7 +43,7 @@ parse <- function(x) {
       result <- list(
         index = list(
           start = index,
-          end = j
+          end = j + 1 # Must return
         ),
         value = value
       )
@@ -183,24 +76,24 @@ parse <- function(x) {
     switch(
       value,
       ":" = {
-        calc <- name(index = i, chars, len)
+        calc <- name(index = i + 1, chars, len)
         l <- list(
           type = "param",
           index = calc$index$start,
           value = calc$value
         )
         tokens <- append(tokens, list(l))
-        i <- calc$index$end + 1
+        i <- calc$index$end
       },
       "*" = {
-        calc <- name(index = i, chars, len)
+        calc <- name(index = i + 1, chars, len)
         l <- list(
           type = "wildcard",
           index = calc$index$start,
           value = calc$value
         )
         tokens <- append(tokens, list(l))
-        i <- calc$index$end + 1
+        i <- calc$index$end
       },
       {
         l <- list(
@@ -224,7 +117,6 @@ parse <- function(x) {
     output <- list()
 
     repeat {
-      # browser()
       token <- tokens[[pos]]
       pos <- pos + 1
 
@@ -245,7 +137,7 @@ parse <- function(x) {
           type = "text",
           value = path
         )
-        output <- append(output, l)
+        output <- append(output, list(l))
 
         next
       }
@@ -257,32 +149,11 @@ parse <- function(x) {
           name = token$value
         )
         # pos <- pos + 1
-        output <- append(output, l)
+        output <- append(output, list(l))
       }
     }
 
     output
   }
+  consumeUntil("end", tokens, j)
 }
-
-# I've just tested on quotes
-x <- '/:""'
-x <- '/:"hola "' #
-x <- '/:"test"stuff' # Work's correctly, the indexes are right.
-x <- '/:"0"'
-
-# Here' are the "usual" cases
-x <- "/:test"
-x <- "/:a:b"
-x <- "/:foo"
-# Corner cases
-x <- ":"
-
-x <- "/*path"
-parse(x)
-system.time(parse(x))
-bench::mark(
-  u = parse(x),
-  iterations = 500,
-  time_unit = "s"
-)
