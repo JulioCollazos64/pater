@@ -72,7 +72,8 @@ test_that("Parse works", {
   path <- '/:"foo'
 
   expect_error(
-    parse(path)
+    parse(path),
+    regexp = "Unterminated quote"
   )
 
   path <- "/:_"
