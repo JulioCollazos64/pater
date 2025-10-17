@@ -158,6 +158,29 @@ test_that("Parse works", {
     )
   )
 
+  # Groups
+  path <- '{/:id}'
+  parsed <- parse(x = path)
+
+  expect_identical(
+    parsed,
+    list(
+      list(
+        type = "group",
+        tokens = list(
+          list(
+            type = "text",
+            value = "/"
+          ),
+          list(
+            type = "param",
+            name = "id"
+          )
+        )
+      )
+    )
+  )
+
   # See: https://github.com/pillarjs/path-to-regexp/pull/390
   # path <- '\\\\:test'
   # parsed <- parse(path)

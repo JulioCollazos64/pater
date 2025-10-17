@@ -27,7 +27,11 @@ parse <- function(x) {
         value <- paste0(value, char[index])
         index <- index + 1
 
-        if (identical(char[index], ":") || is.na(char[index])) {
+        if (
+          identical(char[index], ":") ||
+            is.na(char[index]) ||
+            identical(char[index], "}")
+        ) {
           break
         }
       }
@@ -152,10 +156,10 @@ parse <- function(x) {
     )
   )
 
+  output <- list()
   consumeUntil <- function(endType, tokens, pos) {
-    output <- list()
-
     repeat {
+      # browser()
       token <- tokens[[pos]]
       pos <- pos + 1
 
@@ -190,9 +194,25 @@ parse <- function(x) {
         # pos <- pos + 1
         output <- append(output, list(l))
       }
+
+      if (token$type == "{") {
+        l <- consumeUntil(
+          endType = "}",
+          tokens = tokens,
+          pos = pos
+        )
+        pos <- l[[2]]
+
+        l <- list(
+          type = "group",
+          tokens = l[[1]]
+        )
+
+        output <- append(output, list(l))
+      }
     }
 
-    output
+    list(output, pos)
   }
-  consumeUntil("end", tokens, j)
+  consumeUntil("end", tokens, j)[[1]]
 }
