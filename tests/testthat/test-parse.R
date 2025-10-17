@@ -50,7 +50,9 @@ test_that("Parse works", {
     )
   )
 
-  path <- '/:"0"'
+  # Not valid parameter name in R, but quoted
+
+  path <- '/:".1"'
   parsed <- parse(path)
 
   expect_identical(
@@ -62,33 +64,7 @@ test_that("Parse works", {
       ),
       list(
         type = "param",
-        name = "0"
-      )
-    )
-  )
-
-  # Unterminated quote
-
-  path <- '/:"foo'
-
-  expect_error(
-    parse(path),
-    regexp = "Unterminated quote"
-  )
-
-  path <- "/:_"
-  parsed <- parse(path)
-
-  expect_identical(
-    parsed,
-    list(
-      list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = "_"
+        name = ".1"
       )
     )
   )
@@ -110,7 +86,7 @@ test_that("Parse works", {
     )
   )
 
-  path <- '/:"123"'
+  path <- '/:"t123"'
   parsed <- parse(path)
 
   expect_identical(
@@ -122,7 +98,7 @@ test_that("Parse works", {
       ),
       list(
         type = "param",
-        name = "123"
+        name = "t123"
       )
     )
   )
@@ -182,5 +158,52 @@ test_that("Parse works", {
         value = "stuff"
       )
     )
+  )
+
+  # Need to implement this x2
+  # path <- '\\\\:test'
+  # parsed <- parse(path)
+
+  # expect_identical(
+  #   parsed,
+  #   list(
+  #     list(
+  #       type = "text",
+  #       value = "\\"
+  #     ),
+  #     list(
+  #       type = "param",
+  #       name = "test"
+  #     )
+  #   )
+  # )
+})
+
+test_that("Parse errors", {
+  # Unterminated quote
+
+  path <- '/:"foo'
+
+  expect_error(
+    parse(path),
+    regexp = "Unterminated quote"
+  )
+
+  # Missing parameter name
+
+  path <- ':""test'
+
+  expect_error(
+    parse(path),
+    regexp = "Missing parameter name"
+  )
+
+  # Invalid R name
+
+  path <- "/:_"
+
+  expect_error(
+    parse(path),
+    regexp = "The parameter name.* not.* valid"
   )
 })

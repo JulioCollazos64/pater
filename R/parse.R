@@ -1,5 +1,9 @@
 #' Decompose a path
 #'
+#' @details
+#'
+#' This function only deals with a path segment.
+#'
 #' @param x A character path of length 1.
 #' @returns A list with the path's components.
 #' @export
@@ -14,6 +18,7 @@ parse <- function(x) {
   name <- function(index, char, len) {
     value <- ""
     result <- ""
+    quoted <- FALSE
 
     stopifnot("Not enough data!" = !is.na(char[index]))
 
@@ -39,6 +44,7 @@ parse <- function(x) {
       for (j in (quoteStart + 1):len) {
         if (identical(char[j], '"')) {
           quoteStart <- 0
+          quoted <- TRUE
           break
         }
         value <- paste0(value, char[j])
@@ -59,6 +65,16 @@ parse <- function(x) {
 
     if (!nzchar(result$value)) {
       stop("Missing parameter name at index ", index, call. = FALSE)
+    }
+
+    if (!is_name_safe(result$value) && !quoted) {
+      stop(
+        "The parameter name '",
+        result$value,
+        "' is not a valid one. ",
+        "Did you forget to quote it?",
+        call. = FALSE
+      )
     }
 
     result
