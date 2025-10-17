@@ -103,25 +103,6 @@ test_that("Parse works", {
     )
   )
 
-  # Need to implement this
-
-  # path <- '/:"1\"2\"3"'
-  # parsed <- parse(path)
-
-  # expect_identical(
-  #   parsed,
-  #   list(
-  #     list(
-  #       type = "text",
-  #       value = "/"
-  #     ),
-  #     list(
-  #       type = "param",
-  #       value = '1"2"3'
-  #     )
-  #   )
-  # )
-
   path <- "/*path"
   parsed <- parse(path)
 
@@ -160,7 +141,24 @@ test_that("Parse works", {
     )
   )
 
-  # Need to implement this x2
+  path <- '/:"1\\"2\\"3"'
+  parsed <- parse(path)
+
+  expect_identical(
+    parsed,
+    list(
+      list(
+        type = "text",
+        value = "/"
+      ),
+      list(
+        type = "param",
+        name = '1"2"3'
+      )
+    )
+  )
+
+  # See: https://github.com/pillarjs/path-to-regexp/pull/390
   # path <- '\\\\:test'
   # parsed <- parse(path)
 
@@ -169,7 +167,7 @@ test_that("Parse works", {
   #   list(
   #     list(
   #       type = "text",
-  #       value = "\\"
+  #       value = "\\\\" # Two backlashes
   #     ),
   #     list(
   #       type = "param",

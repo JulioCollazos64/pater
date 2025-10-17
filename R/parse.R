@@ -40,13 +40,18 @@ parse <- function(x) {
       )
     } else if (identical(char[index], '"')) {
       quoteStart <- index
-
-      for (j in (quoteStart + 1):len) {
+      j <- quoteStart
+      while (j <= len) {
+        j <- j + 1
         if (identical(char[j], '"')) {
           quoteStart <- 0
           quoted <- TRUE
           break
         }
+        if (identical(char[j], "\\")) {
+          j <- j + 1
+        }
+
         value <- paste0(value, char[j])
       }
 
@@ -95,10 +100,20 @@ parse <- function(x) {
       )
       tokens <- append(tokens, list(l))
       i <- i + 1
+      next
     }
 
     switch(
       value,
+      "\\" = {
+        l <- list(
+          type = "escape",
+          index = i,
+          value = chars[i]
+        )
+        tokens <- append(tokens, list(l))
+        i <- i + 1
+      },
       ":" = {
         calc <- name(index = i + 1, chars, len)
         l <- list(
