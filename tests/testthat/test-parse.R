@@ -67,6 +67,14 @@ test_that("Parse works", {
     )
   )
 
+  # Unterminated quote
+
+  path <- '/:"foo'
+
+  expect_error(
+    parse(path)
+  )
+
   path <- "/:_"
   parsed <- parse(path)
 
@@ -120,7 +128,7 @@ test_that("Parse works", {
 
   # Need to implement this
 
-  # path <- '/:"1\\"\\2\\"3"'
+  # path <- '/:"1\"2\"3"'
   # parsed <- parse(path)
 
   # expect_identical(

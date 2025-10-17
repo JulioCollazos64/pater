@@ -9,6 +9,9 @@ parse(x)
 \arguments{
 \item{x}{A character path of length 1.}
 }
+\value{
+A list with the path's components.
+}
 \description{
 Decompose a path
 }

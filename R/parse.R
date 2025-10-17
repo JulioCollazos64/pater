@@ -1,10 +1,13 @@
 #' Decompose a path
+#'
 #' @param x A character path of length 1.
+#' @returns A list with the path's components.
 #' @export
 parse <- function(x) {
   chars <- strsplit(x, "")[[1]]
-  stopifnot(nchar(x) == length(chars))
-  stopifnot(length(x) == 1)
+  stopifnot(
+    "`path` must be of length 1" = length(x) == 1
+  )
   len <- nchar(x)
   tokens <- vector(mode = "list")
 
@@ -35,9 +38,14 @@ parse <- function(x) {
 
       for (j in (quoteStart + 1):len) {
         if (identical(char[j], '"')) {
+          quoteStart <- 0
           break
         }
         value <- paste0(value, char[j])
+      }
+
+      if (quoteStart) {
+        stop("Unterminated quote at index ", quoteStart, call. = FALSE)
       }
 
       result <- list(
@@ -132,7 +140,7 @@ parse <- function(x) {
           pos <- pos + 1
           cur <- tokens[[pos]]
         }
-        # Job done, there's no more char or escape character
+
         l <- list(
           type = "text",
           value = path
