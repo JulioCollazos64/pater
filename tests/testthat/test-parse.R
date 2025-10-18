@@ -181,6 +181,38 @@ test_that("Parse works", {
     )
   )
 
+  # A consolidated URL
+
+  path <- "/file/:filename{.:ext}"
+  parsed <- parse(path)
+
+  expect_identical(
+    parsed,
+    list(
+      list(
+        type = "text",
+        value = "/file/"
+      ),
+      list(
+        type = "param",
+        name = "filename"
+      ),
+      list(
+        type = "group",
+        tokens = list(
+          list(
+            type = "text",
+            value = "."
+          ),
+          list(
+            type = "param",
+            name = "ext"
+          )
+        )
+      )
+    )
+  )
+
   # See: https://github.com/pillarjs/path-to-regexp/pull/390
   # path <- '\\\\:test'
   # parsed <- parse(path)
