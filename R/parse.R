@@ -31,6 +31,7 @@ parse <- function(x) {
           identical(char[index], ":") ||
             is.na(char[index]) ||
             identical(char[index], "}") ||
+            identical(char[index], "{") ||
             identical(char[index], "/")
         ) {
           break
