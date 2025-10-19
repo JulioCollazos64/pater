@@ -2,10 +2,10 @@
 #'
 #' @param path A character vector of length 1.
 #' @export
-compile <- function(path, delimiter = "/", encode = URLencode) {
+compile <- function(path, delimiter = "/", encode = utils::URLencode) {
   data <- pater::parse(path)
   tokens <- data
-  fn <- tokensToFunction(tokens)
+  fn <- tokensToFunction(tokens, delimiter, encode)
 
   f <- function(params) {
     result <- fn(params)
@@ -19,7 +19,11 @@ compile <- function(path, delimiter = "/", encode = URLencode) {
 }
 
 tokensToFunction <- function(tokens, delimiter, encode) {
-  encoders <- Map(tokenToFunction, tokens)
+  encoders <- Map(
+    tokenToFunction,
+    tokens,
+    MoreArgs = list(encode = encode, delimiter = delimiter)
+  )
   encoders
 
   function(data) {
@@ -47,7 +51,9 @@ tokenToFunction <- function(token, delimiter, encode) {
     },
     "group" = {
       fn <- tokensToFunction(
-        tokens = token$tokens
+        tokens = token$tokens,
+        delimiter,
+        encode
       )
 
       function(data) {
@@ -77,8 +83,8 @@ tokenToFunction <- function(token, delimiter, encode) {
           )
         }
 
-        result <- vapply(value, URLencode, FUN.VALUE = character(1))
-        result <- paste(result, collapse = "/")
+        result <- vapply(value, encode, FUN.VALUE = character(1))
+        result <- paste(result, collapse = delimiter)
         result
       }
     },
@@ -94,7 +100,7 @@ tokenToFunction <- function(token, delimiter, encode) {
         stop("Expected ", token$name, " to be a string")
       }
 
-      URLencode(value)
+      encode(value)
     }
   )
   data

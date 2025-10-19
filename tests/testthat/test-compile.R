@@ -58,6 +58,19 @@ test_that("Compile works", {
     "/123/xyz"
   )
 
+  path <- "/:test"
+  toPath <- compile(path, encode = function(s) "static")
+
+  expect_identical(
+    toPath(list(test = "123")),
+    "/static"
+  )
+
+  expect_identical(
+    toPath(list(test = "123/xyz")),
+    "/static"
+  )
+
   path <- "{/:test}" # "Optional parameter"
   toPath <- compile(path)
 
