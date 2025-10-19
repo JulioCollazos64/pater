@@ -58,7 +58,7 @@ test_that("Compile works", {
     "/123/xyz"
   )
 
-  path <- "{/:test}"
+  path <- "{/:test}" # "Optional parameter"
   toPath <- compile(path)
 
   expect_identical(
@@ -76,6 +76,19 @@ test_that("Compile works", {
     "/123/xyz"
   )
 
+  path <- "/users{/:id}/delete"
+  toPath <- compile(path)
+
+  expect_identical(
+    toPath(list()),
+    "/users/delete"
+  )
+
+  expect_identical(
+    toPath(list(id = "123")),
+    "/users/123/delete"
+  )
+
   path <- "/*test"
   toPath <- compile(path)
 
@@ -84,11 +97,11 @@ test_that("Compile works", {
     "/123"
   )
 
-  # TODO
-  # expect_identical(
-  #   toPath(list()),
-  #   NULL
-  # )
+  # The wildcard is used to match one or more parameters, can't be defined with 0
+  expect_error(
+    toPath(list()),
+    regexp = "Missing parameter"
+  )
 
   expect_identical(
     toPath(list(test = list("123", "xyz"))),

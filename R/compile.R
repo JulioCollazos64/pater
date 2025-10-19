@@ -68,6 +68,15 @@ tokenToFunction <- function(token, delimiter, encode) {
           return(result)
         }
 
+        if (is.list(value) && !length(value)) {
+          stop(
+            "Expected `",
+            token$name,
+            "` to be a non-empty list",
+            call. = FALSE
+          )
+        }
+
         result <- vapply(value, URLencode, FUN.VALUE = character(1))
         result <- paste(result, collapse = "/")
         result
