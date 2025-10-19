@@ -101,4 +101,11 @@ test_that("Compile works", {
     toPath(list(id = "café")),
     "/user/caf%C3%A9"
   )
+
+  path <- "/*segment"
+  toPath <- compile(path)
+  expect_identical(
+    toPath(list(segment = list("a", "b", "c"))),
+    "/a/b/c"
+  )
 })
