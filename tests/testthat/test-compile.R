@@ -121,4 +121,23 @@ test_that("Compile works", {
     toPath(list(segment = list("a", "b", "c"))),
     "/a/b/c"
   )
+
+  # Zero or more
+  path <- "/files{/*path}"
+  toPath <- compile(path)
+
+  expect_identical(
+    toPath(list()), # zero
+    "/files"
+  )
+
+  expect_identical(
+    toPath(list(path = "xlsx")), # one
+    "/files/xlsx"
+  )
+
+  expect_identical(
+    toPath(list(path = list("xlsx", "xlsm", "docx"))), # more
+    "/files/xlsx/xlsm/docx"
+  )
 })
