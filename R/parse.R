@@ -1,11 +1,11 @@
-#' Decompose a path
+#' Decompose a pathname
 #'
 #' @details
 #'
-#' This function only deals with a path segment.
+#' This function decomposes a given pathname into tokens.
 #'
-#' @param x A character path of length 1.
-#' @returns A list with the path's components.
+#' @param x A character vector of length 1.
+#' @returns A list with the pathname's tokens.
 #' @export
 parse <- function(x) {
   chars <- strsplit(x, "")[[1]]
