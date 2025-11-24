@@ -1,3 +1,3 @@
-is_name_safe <- function(name) {
+isNameSafe <- function(name) {
   make.names(name) == name
 }
