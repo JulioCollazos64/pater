@@ -2,16 +2,19 @@
 % Please edit documentation in R/parse.R
 \name{parse}
 \alias{parse}
-\title{Decompose a path}
+\title{Decompose a pathname}
 \usage{
-parse(x)
+parse(path)
 }
 \arguments{
-\item{x}{A character path of length 1.}
+\item{path}{A character vector of length 1.}
 }
 \value{
-A list with the path's components.
+A list with the pathname's tokens.
 }
 \description{
-Decompose a path
+Decompose a pathname
+}
+\details{
+This function decomposes a given pathname into tokens.
 }
