@@ -28,18 +28,16 @@ parse <- function(path, encodePath = URLencode) {
     stopifnot("Not enough data!" = !is.na(char[index]))
 
     if (grepl(regex_start, char[index], perl = TRUE)) {
-      repeat {
+      start <- index
+      while (grepl(regex_next, char[index], perl = TRUE)) {
         value <- paste0(value, char[index])
         index <- index + 1
-
-        if (!grepl(regex_next, char[index], perl = TRUE)) {
-          break
-        }
       }
+
       result <- list(
         index = list(
-          start = index, # solve this later
-          end = index
+          start = start,
+          nextIter = index
         ),
         value = value
       )
@@ -67,7 +65,7 @@ parse <- function(path, encodePath = URLencode) {
       result <- list(
         index = list(
           start = index,
-          end = j + 1 # Must return
+          nextIter = j + 1
         ),
         value = value
       )
@@ -117,7 +115,7 @@ parse <- function(path, encodePath = URLencode) {
           value = calc$value
         )
         tokens <- append(tokens, list(l))
-        i <- calc$index$end
+        i <- calc$index$nextIter
       },
       "*" = {
         calc <- name(index = i + 1, chars, len)
@@ -127,7 +125,7 @@ parse <- function(path, encodePath = URLencode) {
           value = calc$value
         )
         tokens <- append(tokens, list(l))
-        i <- calc$index$end
+        i <- calc$index$nextIter
       },
       {
         l <- list(
@@ -140,10 +138,11 @@ parse <- function(path, encodePath = URLencode) {
       }
     )
   }
+
   tokens <- append(
     tokens,
     list(
-      list(type = "end", index = i + 1, value = "")
+      list(type = "end", index = i, value = "")
     )
   )
 
