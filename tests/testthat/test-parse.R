@@ -258,6 +258,33 @@ test_that("Parse works", {
       )
     )
   )
+
+  # Encoding
+  path <- "/café"
+  parsed <- parse(path, encodePath = URLencode)
+
+  expect_identical(
+    parsed,
+    list(
+      list(
+        type = "text",
+        value = "/caf%C3%A9"
+      )
+    )
+  )
+
+  path <- "/café"
+  parsed <- parse(path, encodePath = identity)
+
+  expect_identical(
+    parsed,
+    list(
+      list(
+        type = "text",
+        value = "/café"
+      )
+    )
+  )
 })
 
 test_that("Parse errors", {
