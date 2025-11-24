@@ -4,15 +4,15 @@
 #'
 #' This function decomposes a given pathname into tokens.
 #'
-#' @param x A character vector of length 1.
+#' @param path A character vector of length 1.
 #' @returns A list with the pathname's tokens.
 #' @export
-parse <- function(x) {
-  chars <- strsplit(x, "")[[1]]
+parse <- function(path) {
+  chars <- strsplit(path, "")[[1]]
   stopifnot(
-    "`path` must be of length 1" = length(x) == 1
+    "`path` must be of length 1" = length(path) == 1
   )
-  len <- nchar(x)
+  len <- nchar(path)
   tokens <- vector(mode = "list")
 
   name <- function(index, char, len) {

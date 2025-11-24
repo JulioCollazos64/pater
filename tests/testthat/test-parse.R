@@ -160,7 +160,7 @@ test_that("Parse works", {
 
   # Groups
   path <- '{/:id}'
-  parsed <- parse(x = path)
+  parsed <- parse(path)
 
   expect_identical(
     parsed,
