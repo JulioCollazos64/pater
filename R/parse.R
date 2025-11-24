@@ -19,21 +19,18 @@ parse <- function(x) {
     value <- ""
     result <- ""
     quoted <- FALSE
+    # see `make.names` docs
+    regex_start <- "[a-zA-Z\\p{L}.]"
+    regex_next <- "[a-zA-Z0-9\\p{L}._]"
 
     stopifnot("Not enough data!" = !is.na(char[index]))
 
-    if (!identical(char[index], '"')) {
+    if (grepl(regex_start, char[index], perl = TRUE)) {
       repeat {
         value <- paste0(value, char[index])
         index <- index + 1
 
-        if (
-          identical(char[index], ":") ||
-            is.na(char[index]) ||
-            identical(char[index], "}") ||
-            identical(char[index], "{") ||
-            identical(char[index], "/")
-        ) {
+        if (!grepl(regex_next, char[index], perl = TRUE)) {
           break
         }
       }
