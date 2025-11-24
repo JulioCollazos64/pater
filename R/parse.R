@@ -71,7 +71,7 @@ parse <- function(x) {
       )
     }
 
-    if (!nzchar(result)) {
+    if (identical(result, "") || !nzchar(result$value)) {
       stop("Missing parameter name at index ", index, call. = FALSE)
     }
 
