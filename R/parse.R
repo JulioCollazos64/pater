@@ -6,7 +6,7 @@
 #'
 #' @param path A character vector of length 1.
 #' @param encodePath A function to encode characters, defaults to `URLencode`.
-#' @returns A list with the pathname's tokens.
+#' @returns An object of class `tokenData`.
 #' @export
 parse <- function(path, encodePath = utils::URLencode) {
   chars <- strsplit(path, "")[[1]]
@@ -218,5 +218,20 @@ parse <- function(path, encodePath = utils::URLencode) {
 
     list(output, pos)
   }
-  consumeUntil("end", tokens, j)[[1]]
+  result <- consumeUntil("end", tokens, j)[[1]]
+  buildTokenData(result)
+}
+
+#' @noRd
+#' @keywords internal
+isTokenData <- function(x) {
+  inherits(x, "tokenData")
+}
+
+#' Build tokenData object
+#'
+#' @noRd
+#' @keywords internal
+buildTokenData <- function(x) {
+  structure(x, class = "tokenData")
 }

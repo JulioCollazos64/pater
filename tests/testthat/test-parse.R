@@ -4,10 +4,12 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
+        list(
+          type = "text",
+          value = "/"
+        )
       )
     )
   )
@@ -17,14 +19,16 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = "test"
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "param",
+          name = "test"
+        )
       )
     )
   )
@@ -34,18 +38,20 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = "a"
-      ),
-      list(
-        type = "param",
-        name = "b"
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "param",
+          name = "a"
+        ),
+        list(
+          type = "param",
+          name = "b"
+        )
       )
     )
   )
@@ -57,14 +63,16 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = ".1"
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "param",
+          name = ".1"
+        )
       )
     )
   )
@@ -74,14 +82,16 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = "café"
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "param",
+          name = "café"
+        )
       )
     )
   )
@@ -91,14 +101,16 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = "t123"
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "param",
+          name = "t123"
+        )
       )
     )
   )
@@ -108,14 +120,16 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "wildcard",
-        name = "path"
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "wildcard",
+          name = "path"
+        )
       )
     )
   )
@@ -125,18 +139,20 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = "test"
-      ),
-      list(
-        type = "text",
-        value = "stuff"
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "param",
+          name = "test"
+        ),
+        list(
+          type = "text",
+          value = "stuff"
+        )
       )
     )
   )
@@ -146,14 +162,16 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/"
-      ),
-      list(
-        type = "param",
-        name = '1"2"3'
+        list(
+          type = "text",
+          value = "/"
+        ),
+        list(
+          type = "param",
+          name = '1"2"3'
+        )
       )
     )
   )
@@ -164,17 +182,19 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "group",
-        tokens = list(
-          list(
-            type = "text",
-            value = "/"
-          ),
-          list(
-            type = "param",
-            name = "id"
+        list(
+          type = "group",
+          tokens = list(
+            list(
+              type = "text",
+              value = "/"
+            ),
+            list(
+              type = "param",
+              name = "id"
+            )
           )
         )
       )
@@ -188,25 +208,27 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/file/"
-      ),
-      list(
-        type = "param",
-        name = "filename"
-      ),
-      list(
-        type = "group",
-        tokens = list(
-          list(
-            type = "text",
-            value = "."
-          ),
-          list(
-            type = "param",
-            name = "ext"
+        list(
+          type = "text",
+          value = "/file/"
+        ),
+        list(
+          type = "param",
+          name = "filename"
+        ),
+        list(
+          type = "group",
+          tokens = list(
+            list(
+              type = "text",
+              value = "."
+            ),
+            list(
+              type = "param",
+              name = "ext"
+            )
           )
         )
       )
@@ -237,10 +259,12 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/book/holy-book"
+        list(
+          type = "text",
+          value = "/book/holy-book"
+        )
       )
     )
   )
@@ -251,10 +275,12 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/(test"
+        list(
+          type = "text",
+          value = "/(test"
+        )
       )
     )
   )
@@ -265,10 +291,12 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/caf%C3%A9"
+        list(
+          type = "text",
+          value = "/caf%C3%A9"
+        )
       )
     )
   )
@@ -278,10 +306,12 @@ test_that("Parse works", {
 
   expect_identical(
     parsed,
-    list(
+    buildTokenData(
       list(
-        type = "text",
-        value = "/café"
+        list(
+          type = "text",
+          value = "/café"
+        )
       )
     )
   )
