@@ -8,7 +8,7 @@
 #' @param encodePath A function to encode characters, defaults to `URLencode`.
 #' @returns A list with the pathname's tokens.
 #' @export
-parse <- function(path, encodePath = URLencode) {
+parse <- function(path, encodePath = utils::URLencode) {
   chars <- strsplit(path, "")[[1]]
   stopifnot(
     "`path` must be of length 1" = length(path) == 1,
