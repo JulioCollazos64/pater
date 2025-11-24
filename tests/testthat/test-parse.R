@@ -230,6 +230,20 @@ test_that("Parse works", {
   #     )
   #   )
   # )
+
+  # Slug
+  path <- "/book/holy-book"
+  parsed <- parse(path)
+
+  expect_identical(
+    parsed,
+    list(
+      list(
+        type = "text",
+        value = "/book/holy-book"
+      )
+    )
+  )
 })
 
 test_that("Parse errors", {
