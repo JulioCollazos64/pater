@@ -244,6 +244,20 @@ test_that("Parse works", {
       )
     )
   )
+
+  # Regex features
+  path <- "/\\(test"
+  parsed <- parse(path)
+
+  expect_identical(
+    parsed,
+    list(
+      list(
+        type = "text",
+        value = "/(test"
+      )
+    )
+  )
 })
 
 test_that("Parse errors", {
@@ -271,5 +285,13 @@ test_that("Parse errors", {
 
   expect_error(
     parse(path)
+  )
+
+  # Unexpected characters
+
+  path <- "/(test"
+  expect_error(
+    parse(path),
+    regexp = "Unexpected.*"
   )
 })

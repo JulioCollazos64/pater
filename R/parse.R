@@ -104,10 +104,10 @@ parse <- function(path, encodePath = URLencode) {
         l <- list(
           type = "escape",
           index = i,
-          value = chars[i]
+          value = chars[i + 1] # "catch" the next char
         )
         tokens <- append(tokens, list(l))
-        i <- i + 1
+        i <- i + 2
       },
       ":" = {
         calc <- name(index = i + 1, chars, len)
@@ -160,6 +160,7 @@ parse <- function(path, encodePath = URLencode) {
       if (token$type %in% c("char", "escape")) {
         path <- token$value
         cur <- tokens[[pos]]
+
         while (cur$type %in% c("char", "escape")) {
           path <- paste0(path, cur$value)
           pos <- pos + 1
@@ -181,8 +182,10 @@ parse <- function(path, encodePath = URLencode) {
           type = token$type,
           name = token$value
         )
-        # pos <- pos + 1
+
         output <- append(output, list(l))
+
+        next
       }
 
       if (token$type == "{") {
@@ -199,6 +202,8 @@ parse <- function(path, encodePath = URLencode) {
         )
 
         output <- append(output, list(l))
+
+        next
       }
 
       stop(
