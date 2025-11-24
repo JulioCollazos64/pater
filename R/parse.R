@@ -5,12 +5,14 @@
 #' This function decomposes a given pathname into tokens.
 #'
 #' @param path A character vector of length 1.
+#' @param encodePath A function to encode characters, defaults to `URLencode`.
 #' @returns A list with the pathname's tokens.
 #' @export
-parse <- function(path) {
+parse <- function(path, encodePath = URLencode) {
   chars <- strsplit(path, "")[[1]]
   stopifnot(
-    "`path` must be of length 1" = length(path) == 1
+    "`path` must be of length 1" = length(path) == 1,
+    "`encodePath` must be a function" = is.function(encodePath)
   )
   len <- nchar(path)
   tokens <- vector(mode = "list")
@@ -167,7 +169,7 @@ parse <- function(path) {
 
         l <- list(
           type = "text",
-          value = path
+          value = encodePath(path)
         )
         output <- append(output, list(l))
 
