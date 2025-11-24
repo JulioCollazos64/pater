@@ -150,7 +150,6 @@ parse <- function(path, encodePath = URLencode) {
   output <- list()
   consumeUntil <- function(endType, tokens, pos) {
     repeat {
-      # browser()
       token <- tokens[[pos]]
       pos <- pos + 1
 
@@ -201,6 +200,16 @@ parse <- function(path, encodePath = URLencode) {
 
         output <- append(output, list(l))
       }
+
+      stop(
+        "Unexpected ",
+        token$type,
+        " at index ",
+        pos,
+        " expected ",
+        endType,
+        call. = FALSE
+      )
     }
 
     list(output, pos)
