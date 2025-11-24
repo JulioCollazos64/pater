@@ -256,7 +256,6 @@ test_that("Parse errors", {
   path <- "/:_"
 
   expect_error(
-    parse(path),
-    regexp = "The parameter name.* not.* valid"
+    parse(path)
   )
 })

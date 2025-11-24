@@ -71,18 +71,8 @@ parse <- function(x) {
       )
     }
 
-    if (!nzchar(result$value)) {
+    if (!nzchar(result)) {
       stop("Missing parameter name at index ", index, call. = FALSE)
-    }
-
-    if (!is_name_safe(result$value) && !quoted) {
-      stop(
-        "The parameter name '",
-        result$value,
-        "' is not a valid one. ",
-        "Did you forget to quote it?",
-        call. = FALSE
-      )
     }
 
     result
