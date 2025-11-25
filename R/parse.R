@@ -21,9 +21,9 @@ parse <- function(path, encodePath = utils::URLencode) {
     value <- ""
     result <- ""
     quoted <- FALSE
-    # see `make.names` docs
-    regex_start <- "[a-zA-Z\\p{L}.]"
-    regex_next <- "[a-zA-Z0-9\\p{L}._]"
+
+    regex_start <- regexFirst()
+    regex_next <- regexOthers()
 
     stopifnot("Not enough data!" = !is.na(char[index]))
 
