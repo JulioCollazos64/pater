@@ -9,13 +9,13 @@ isNameSafe <- function(name) {
 
 #' Validate next token
 #'
-#' @param token token following a parameter token
+#' @param token An object of class `tokenData`.
 #'
 #' @noRd
 #' @keywords internal
 isNextNameSafe <- function(token) {
   regex_next <- regexOthers()
-  if (token$type == "text") {
+  if (isTokenData(token) && token$type == "text") {
     letter <- substr(token$value, 1, 1)
     return(!grepl(regex_next, letter, perl = TRUE))
   }
