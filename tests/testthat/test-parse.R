@@ -236,22 +236,25 @@ test_that("Parse works", {
   )
 
   # See: https://github.com/pillarjs/path-to-regexp/pull/390
-  # path <- '\\\\:test'
-  # parsed <- parse(path)
 
-  # expect_identical(
-  #   parsed,
-  #   list(
-  #     list(
-  #       type = "text",
-  #       value = "\\\\" # Two backlashes
-  #     ),
-  #     list(
-  #       type = "param",
-  #       name = "test"
-  #     )
-  #   )
-  # )
+  path <- '\\\\:test'
+  parsed <- parse(path, encodePath = identity)
+
+  expect_identical(
+    parsed,
+    buildTokenData(
+      list(
+        list(
+          type = "text",
+          value = "\\"
+        ),
+        list(
+          type = "param",
+          name = "test"
+        )
+      )
+    )
+  )
 
   # Slug
   path <- "/book/holy-book"
