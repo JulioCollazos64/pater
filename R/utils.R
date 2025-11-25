@@ -41,3 +41,14 @@ regexFirst <- function() {
 regexOthers <- function() {
   "[a-zA-Z0-9\\p{L}._]"
 }
+
+#' @noRd
+#' @keywords internal
+escapeText <- function(value) {
+  gsub(
+    pattern = "([{}()\\[\\]+?!:*])",
+    replacement = "\\\\\\1",
+    value,
+    perl = TRUE
+  )
+}
