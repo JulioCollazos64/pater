@@ -44,7 +44,7 @@ stringifyTokens <- function(tokens) {
         i <- i + 1
         value <- paste0(value, "*", name(token$name, nextToken = tokens[i]))
       },
-      stop("Unknow token type", call. = FALSE)
+      stop("Unknown token type", call. = FALSE)
     )
   }
   value
