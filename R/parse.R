@@ -216,10 +216,13 @@ parse <- function(path, encodePath = utils::URLencode) {
       )
     }
 
-    list(output, pos)
+    list(
+      buildTokenData(output),
+      pos
+    )
   }
   result <- consumeUntil("end", tokens, j)[[1]]
-  buildTokenData(result)
+  result
 }
 
 #' @noRd
