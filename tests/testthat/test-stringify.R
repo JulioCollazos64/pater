@@ -26,6 +26,8 @@ test_that("Stringify works", {
     "/users/:userId/posts/:postId"
   )
 
+  # This is one case where the token next to the parameter
+  # is not "safe".
   tokens <- buildTokenData(
     list(
       list(
