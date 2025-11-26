@@ -1,6 +1,9 @@
+#' From `tokenData` object to a character vector
+#'
+#' @param tokens An object of class `tokenData`
+#' @return A character vector of length 1.
 #' @export
 stringifyTokens <- function(tokens) {
-  # browser()
   stopifnot(isTokenData(tokens))
   value <- ""
   i <- 1
@@ -10,18 +13,19 @@ stringifyTokens <- function(tokens) {
     if (isSafe) {
       return(value)
     }
+
+    paste0("\"", value, "\"")
   }
 
   while (i <= length(tokens)) {
     token <- tokens[[i]]
     type <- token$type
-    i <- i + 1
 
     switch(
       type,
       "text" = {
         value <- paste0(value, escapeText(token$value))
-        next
+        i <- i + 1
       },
       "group" = {
         value <- paste0(
@@ -30,15 +34,15 @@ stringifyTokens <- function(tokens) {
           stringifyTokens(token),
           "}"
         )
-        next
+        i <- i + 1
       },
       "param" = {
-        value <- paste0(value, ":", name(token$name, nextToken = tokens[[i]]))
-        next
+        i <- i + 1
+        value <- paste0(value, ":", name(token$name, nextToken = tokens[i]))
       },
       "wildcard" = {
-        value <- paste0(value, "*", name(token$name, nextToken = tokens[[i]]))
-        next
+        i <- i + 1
+        value <- paste0(value, "*", name(token$name, nextToken = tokens[i]))
       },
       stop("Unknow token type", call. = FALSE)
     )
