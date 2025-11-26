@@ -31,7 +31,7 @@ stringifyTokens <- function(tokens) {
         value <- paste0(
           value,
           "{",
-          stringifyTokens(token),
+          stringifyTokens(token$tokens),
           "}"
         )
         i <- i + 1
