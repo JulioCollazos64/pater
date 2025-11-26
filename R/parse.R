@@ -1,9 +1,9 @@
 #' Decompose a pathname
 #'
+#' This function decomposes a given pathname into meaningful tokens.
+
 #' @details
-#'
-#' This function decomposes a given pathname into tokens.
-#'
+#' TODO
 #' @param path A character vector of length 1.
 #' @param encodePath A function to encode characters, defaults to `URLencode`.
 #' @returns An object of class `tokenData`.

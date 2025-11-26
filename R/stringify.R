@@ -1,5 +1,6 @@
 #' From `tokenData` object to a character vector
 #'
+#' The inverse of the [parse()]
 #' @param tokens An object of class `tokenData`
 #' @return A character vector of length 1.
 #' @export
@@ -54,7 +55,7 @@ stringifyTokens <- function(tokens) {
 #'
 #' @noRd
 #' @keywords internal
-#' @param name
+#' @param name A possible R name
 isNameSafe <- function(name) {
   make.names(name) == name
 }

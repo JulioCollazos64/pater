@@ -4,17 +4,19 @@
 \alias{parse}
 \title{Decompose a pathname}
 \usage{
-parse(path)
+parse(path, encodePath = utils::URLencode)
 }
 \arguments{
 \item{path}{A character vector of length 1.}
+
+\item{encodePath}{A function to encode characters, defaults to \code{URLencode}.}
 }
 \value{
-A list with the pathname's tokens.
+An object of class \code{tokenData}.
 }
 \description{
-Decompose a pathname
+This function decomposes a given pathname into meaningful tokens.
 }
 \details{
-This function decomposes a given pathname into tokens.
+TODO
 }
