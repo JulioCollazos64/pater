@@ -15,7 +15,13 @@ isNameSafe <- function(name) {
 #' @keywords internal
 isNextNameSafe <- function(token) {
   regex_next <- regexOthers()
-  if (isTokenData(token) && token$type == "text") {
+  token <- token[[1]]
+
+  if (is.null(token)) {
+    return(TRUE)
+  }
+
+  if (token$type == "text") {
     letter <- substr(token$value, 1, 1)
     return(!grepl(regex_next, letter, perl = TRUE))
   }
@@ -42,6 +48,8 @@ regexOthers <- function() {
   "[a-zA-Z0-9\\p{L}._]"
 }
 
+#' Escape some regex keywords
+#'
 #' @noRd
 #' @keywords internal
 escapeText <- function(value) {
