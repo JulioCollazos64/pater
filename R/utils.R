@@ -24,7 +24,7 @@ regexOthers <- function() {
 #' @keywords internal
 escapeText <- function(value) {
   gsub(
-    pattern = "([{}()\\[\\]+?!:*])",
+    pattern = "([{}()\\[\\]+?!:*\\\\])",
     replacement = "\\\\\\1",
     value,
     perl = TRUE
