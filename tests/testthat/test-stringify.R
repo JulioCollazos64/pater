@@ -3,6 +3,21 @@ test_that("Stringify works", {
     list(
       list(
         type = "text",
+        value = "/"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    "/"
+  )
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
         value = "/users/"
       ),
       list(
@@ -68,6 +83,153 @@ test_that("Stringify works", {
   expect_identical(
     path,
     "/:foo"
+  )
+
+  # group
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "/users"
+      ),
+      list(
+        type = "group",
+        tokens = buildTokenData(
+          list(
+            list(
+              type = "text",
+              value = "/"
+            ),
+            list(
+              type = "param",
+              name = "id"
+            )
+          )
+        )
+      ),
+      list(
+        type = "text",
+        value = "/delete"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    "/users{/:id}/delete"
+  )
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "/:+?*"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    "/\\:\\+\\?\\*"
+  )
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "/"
+      ),
+      list(
+        type = "wildcard",
+        name = "0"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    '/*"0"'
+  )
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "/"
+      ),
+      list(
+        type = "wildcard",
+        name = "test"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    "/*test"
+  )
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "/"
+      ),
+      list(
+        type = "param",
+        name = "0"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    '/:"0"'
+  )
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "/"
+      ),
+      list(
+        type = "param",
+        name = "café"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    "/:café"
+  )
+
+  # see: https://github.com/pillarjs/path-to-regexp/pull/390/files
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "\\"
+      ),
+      list(
+        type = "param",
+        name = "test"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    "\\\\:test"
   )
 })
 
