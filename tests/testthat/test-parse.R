@@ -186,14 +186,16 @@ test_that("Parse works", {
       list(
         list(
           type = "group",
-          tokens = list(
+          tokens = buildTokenData(
             list(
-              type = "text",
-              value = "/"
-            ),
-            list(
-              type = "param",
-              name = "id"
+              list(
+                type = "text",
+                value = "/"
+              ),
+              list(
+                type = "param",
+                name = "id"
+              )
             )
           )
         )
@@ -220,14 +222,16 @@ test_that("Parse works", {
         ),
         list(
           type = "group",
-          tokens = list(
+          tokens = buildTokenData(
             list(
-              type = "text",
-              value = "."
-            ),
-            list(
-              type = "param",
-              name = "ext"
+              list(
+                type = "text",
+                value = "."
+              ),
+              list(
+                type = "param",
+                name = "ext"
+              )
             )
           )
         )
