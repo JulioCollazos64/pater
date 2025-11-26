@@ -50,6 +50,25 @@ test_that("Stringify works", {
     path,
     '/users/:"id"randomText'
   )
+
+  tokens <- buildTokenData(
+    list(
+      list(
+        type = "text",
+        value = "/"
+      ),
+      list(
+        type = "param",
+        name = "foo"
+      )
+    )
+  )
+  path <- stringifyTokens(tokens)
+
+  expect_identical(
+    path,
+    "/:foo"
+  )
 })
 
 test_that("Stringify errors", {
