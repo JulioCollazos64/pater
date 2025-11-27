@@ -2,7 +2,12 @@
 #'
 #' The function will have one parameter in which you can specify the parameters
 #' @export
-compile <- function(path, delimiter = "/", encode = utils::URLencode) {
+compile <- function(path, delimiter = "/", encode) {
+  if (missing(encode)) {
+    encode <- function(url) {
+      utils::URLencode(url, reserved = TRUE)
+    }
+  }
   data <- switch(
     class(path),
     "tokenData" = path,
