@@ -156,3 +156,30 @@ test_that("Compile works", {
     "/123"
   )
 })
+
+test_that("Compile errors", {
+  toPath <- compile("/a/:b/c")
+
+  expect_error(
+    toPath(params = NULL),
+    "Missing parameters: b"
+  )
+
+  toPath <- compile("/*foo")
+  expect_error(
+    toPath(params = list(foo = character(0))),
+    "Expected foo to be a non-empty character vector"
+  )
+
+  toPath <- compile("/:foo")
+  expect_error(
+    toPath(params = list(foo = character(2))),
+    "Expected foo to be a string of length 1"
+  )
+
+  toPath <- compile("/*foo")
+  expect_error(
+    toPath(params = list(foo = list("a", "b"))),
+    "Expected foo to be a non-empty character vector"
+  )
+})
