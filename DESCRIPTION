@@ -2,7 +2,11 @@ Package: pater
 Title: Turn a URL pathname into a regular expression
 Version: 0.0.0.9000
 Authors@R: 
-    person("Julio", "Collazos", , "amarullazo626@gmail.com", role = c("aut", "cre"))
+    c(
+        person("Julio", "Collazos", , "amarullazo626@gmail.com", role = c("aut", "cre")),
+        person("path-to-regexp contributors", role = "cph",
+        comment = "see <https://github.com/pillarjs/path-to-regexp/graphs/contributors>")
+    )
 Description: R's implementation of the Javascript library 'path-to-regexp'. It has been written to provide R web frameworks features such as parameter matching, optional parameters and parameter wildcards.
 License: MIT + file LICENSE
 Encoding: UTF-8
