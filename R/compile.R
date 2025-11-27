@@ -8,6 +8,11 @@ compile <- function(path, delimiter = "/", encode) {
       utils::URLencode(url, reserved = TRUE)
     }
   }
+
+  if (isFALSE(encode)) {
+    encode <- identity
+  }
+
   data <- switch(
     class(path),
     "tokenData" = path,
