@@ -49,7 +49,6 @@ tokensToFunction <- function(tokens, delimiter, encode) {
 
   f <- function(data) {
     result <- ""
-
     for (encoder in encoders) {
       res <- encoder(data)
       value <- res[1]
@@ -90,7 +89,7 @@ tokenToFunction <- function(token, delimiter, encode = identity) {
     return(f)
   }
 
-  if (token$type == "wildcard") {
+  if (token$type == "wildcard" && !identical(encode, identity)) {
     f <- function(data) {
       value <- data[[token$name]]
 
