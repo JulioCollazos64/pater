@@ -21,7 +21,6 @@ compile <- function(path, delimiter = "/", encode) {
   fn <- tokensToFunction(data, delimiter, encode)
 
   f <- function(params) {
-    # browser()
     result <- fn(params)
     path <- result[1]
     missing <- result[-1]
@@ -49,7 +48,6 @@ tokensToFunction <- function(tokens, delimiter, encode) {
   )
 
   f <- function(data) {
-    # browser()
     result <- ""
 
     for (encoder in encoders) {
@@ -76,7 +74,6 @@ tokenToFunction <- function(token, delimiter, encode = identity) {
   }
 
   if (token$type == "group") {
-    browser()
     fn <- tokensToFunction(token$tokens, delimiter, encode)
 
     f <- function(data) {
@@ -95,7 +92,6 @@ tokenToFunction <- function(token, delimiter, encode = identity) {
 
   if (token$type == "wildcard") {
     f <- function(data) {
-      # browser()
       value <- data[[token$name]]
 
       if (is.null(value)) {
@@ -136,7 +132,6 @@ tokenToFunction <- function(token, delimiter, encode = identity) {
   }
 
   f <- function(data) {
-    # browser()
     value <- data[[token$name]]
 
     if (is.null(value)) {
