@@ -1,5 +1,8 @@
 #' Build a regular expression for matching strings against paths.
 #'
+#' @examples
+#' # example code
+#'
 #' @param path A character vector, TokenData, or
 #' an array of strings and TokenData objects.
 #' @export
@@ -20,10 +23,12 @@ pathToRegexp <- function(
   for (input in pathsToList(path)) {
     data <- if (isTokenData(input)) input else parse(input)
     for (tokens in flatten(data)) {
-      # TODO
+      sources <- c(sources, toRegExpSource(tokens, delimiter, keys))
     }
   }
+  sources
 }
+
 
 #' Transform a flat sequence of tokens into a regular expression
 #'
@@ -43,6 +48,7 @@ toRegExpSource <- function(
   keys
   # , originalPath # (not implemented)
 ) {
+  # browser()
   result <- ""
   backtrack <- ""
   isSafeSegmentParam <- TRUE
@@ -188,25 +194,36 @@ pathsToList <- local({
 #')
 #' flatten(builded)
 #'
+#' path <- "/users/:id"
+#' tokens <- parse(path)
+#' flatten(tokens)
+#'
+#' path <- "/users{/:id}"
+#' tokens <- parse(path)
+#' flatten(tokens)
+#'
 #' @noRd
 #' @keywords internal
 #' @details
 #' Original implementation use "generators".
-#'
-#'
 flatten <- function(tokens, index = 1, init = list()) {
   if (index > length(tokens)) {
-    return(init)
+    return(list(init))
   }
 
   token <- tokens[[index]]
 
   if (token$type == "group") {
-    result <- list()
-    l <- flatten(token$tokens, init = init)
-    init <- append(init, list(l))
-  } else {
-    init <- append(init, list(token))
+    results <- list()
+
+    for (seq in flatten(token$tokens, 1, init)) {
+      results <- c(results, flatten(tokens, index + 1, seq))
+    }
+
+    results <- c(results, flatten(tokens, index + 1, init))
+    return(results)
   }
-  flatten(tokens, index + 1, init)
+
+  newInit <- c(init, list(token))
+  return(flatten(tokens, index + 1, newInit))
 }
