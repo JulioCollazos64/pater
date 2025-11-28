@@ -30,3 +30,36 @@ escapeText <- function(value) {
     perl = TRUE
   )
 }
+
+#' Escape text
+#'
+#' @noRd
+#' @keywords internal
+escape <- function(value) {
+  gsub(
+    pattern = "([.+*?^${}()\\[\\]|/\\\\])",
+    replacement = "\\\\\\1",
+    value,
+    perl = TRUE
+  )
+}
+
+#' Block backtracking on previous text and ignore delimiter string
+#'
+#' @noRd
+#' @keywords internal
+negate <- function(delimiter, backtrack) {
+  if (length(backtrack) < 2) {
+    if (length(delimiter)) {
+      return(paste0("[^", escape(paste0(delimiter, backtrack)), "]"))
+    }
+    return(paste0("(?:(?!", escape(delimiter), ")[^", escape(backtrack)))
+  }
+
+  if (length(delimiter) < 2) {
+    return(
+      paste0("(?:(?!", escape(backtrack), ")[^", escape(delimiter), "])")
+    )
+  }
+  paste0("(?:(?!", escape(backtrack), "|", escape(delimiter), ")[\\s\\S])")
+}

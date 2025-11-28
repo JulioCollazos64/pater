@@ -19,8 +19,69 @@ pathToRegexp <- function(
   environment(pathsToList)$init <- NULL
   for (input in pathsToList(path)) {
     data <- if (isTokenData(input)) input else parse(input)
-    flatten()
+    for (tokens in flatten(data)) {
+      # TODO
+    }
   }
+}
+
+#' Transform a flat sequence of tokens into a regular expression
+#'
+#' @examples
+#'
+#' tokens <- parse("/users/")
+#' toRegExpSource(tokens)
+#' # parameter
+#' tokens <- parse("/users/:id")
+#' toRegExpSource(tokens)
+#'
+#' @noRd
+#' @keywords internal
+toRegExpSource <- function(
+  tokens,
+  delimiter,
+  keys
+  # , originalPath # (not implemented)
+) {
+  result <- ""
+  backtrack <- ""
+  isSafeSegmentParam <- TRUE
+  for (token in tokens) {
+    if (token$type == "text") {
+      result <- paste0(result, escape(token$value))
+      backtrack <- paste0(backtrack, token$value)
+      if (isFALSE(isSafeSegmentParam)) {
+        isSafeSegmentParam <- grepl(token$value, delimiter, perl = TRUE)
+      }
+      next
+    }
+
+    if (token$type %in% c("param", "wildcard")) {
+      # TODO: if (!isSafeSegmentParam && !backtrack) {}
+
+      if (token$type == "param") {
+        result <- paste0(
+          result,
+          "(",
+          negate(
+            delimiter,
+            if (isSafeSegmentParam) "" else backtrack
+          ),
+          "+)"
+        )
+      } else {
+        result <- paste0(result, "([\\s\\S]+)")
+      }
+
+      keys <- append(keys, list(token))
+      backtrack <- ""
+      isSafeSegmentParam <- FALSE
+
+      next
+    }
+  }
+
+  result
 }
 
 #' Convert a character vector, tokenData or a combination of
