@@ -13,7 +13,7 @@ pathToRegexp <- function(
   # --------------------------------------------------------
   keys <- character(0)
   flags <- if (sensitive) "" else "(?i)"
-  sources <- list()
+  sources <- character(0)
 
   # so that it doesn't grow each time this function is called!
   environment(pathsToList)$init <- NULL
@@ -23,7 +23,8 @@ pathToRegexp <- function(
   }
 }
 
-#' Convert a character vector, tokenData or a combination of both into a flat list.
+#' Convert a character vector, tokenData or a combination of
+#' both into a flat list
 #'
 #' @examples
 #'
@@ -83,6 +84,68 @@ pathsToList <- local({
   }
 })
 
+#' Generate a flat list of sequence tokens from the given tokens
+#'
+#' @examples
+#' # "normal" tokenData
+#' builded <- buildTokenData(
+#'   list(
+#'     list(
+#'       type = "text",
+#'       value = "/users/"
+#'     ),
+#'     list(
+#'       type = "param",
+#'       name = "id"
+#'     )
+#'   )
+#' )
+#' flatten(builded)
+#' # token of type group
+#' builded <- buildTokenData(
+#'  list(
+#'    list(
+#'      type = "text",
+#'      value = "/users"
+#'    ),
+#'    list(
+#'      type = "group",
+#'      tokens = buildTokenData(
+#'        list(
+#'          list(
+#'            type = "text",
+#'            value = "/"
+#'          ),
+#'          list(
+#'            type = "param",
+#'            name = "id"
+#'          )
+#'        )
+#'      )
+#'    )
+#'  )
+#')
+#' flatten(builded)
+#'
 #' @noRd
 #' @keywords internal
-flatten <- function() {}
+#' @details
+#' Original implementation use "generators".
+#'
+#'
+flatten <- function(tokens, index = 1, init = list()) {
+  if (index > length(tokens)) {
+    return(init)
+  }
+
+  token <- tokens[[index]]
+
+  if (token$type == "group") {
+    result <- list()
+    l <- flatten(token$tokens, init = init)
+    init <- append(init, list(l))
+  } else {
+    init <- append(init, list(token))
+  }
+  flatten(tokens, index + 1, init)
+}
