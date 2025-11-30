@@ -47,17 +47,17 @@ match <- function(path, decode, delimiter = "/", ...) {
     }
     path <- m[1]
     params <- list()
-    i <- 1
-    while (i < length(m)) {
+    i <- 2
+    while (i <= length(m)) {
       if (identical(m[i], "")) {
         i <- i + 1
         next
       }
 
-      key <- keys[[i]]
-      decoder <- decoders[[i]]
+      key <- keys[[i - 1]]
+      decoder <- decoders[[i - 1]]
 
-      params[[key$name]] <- unlist(decoder(m[i + 1]), use.names = FALSE)
+      params[[key$name]] <- unlist(decoder(m[i]), use.names = FALSE)
       i <- i + 1
     }
     list(
