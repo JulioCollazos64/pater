@@ -11,7 +11,7 @@
 #' @param trailing A logical vector of length 1. Whether or not match
 #' trailing path. Defaults to TRUE.
 #'
-#' @return A regular expression.
+#' @return A list with two elements: a regular expression and a list of keys.
 #' @examples
 #' path <- "/hello/world"
 #' regex <- pathToRegexp(path)
@@ -77,7 +77,7 @@ pathToRegexp <- function(
   delimiter = "/"
 ) {
   # --------------------------------------------------------
-  keys <- character(0)
+  keys <- vector(mode = "list")
   flags <- if (sensitive) "" else "(?i)"
   sources <- character(0)
 
@@ -86,7 +86,10 @@ pathToRegexp <- function(
   for (input in pathsToList(path)) {
     data <- if (isTokenData(input)) input else parse(input)
     for (tokens in flatten(data)) {
-      sources <- c(sources, toRegExpSource(tokens, delimiter, keys))
+      browser()
+      new <- toRegExpSource(tokens, delimiter, keys)
+      sources <- c(sources, new$sources)
+      keys <- new$keys
     }
   }
   pattern <- sprintf("^(?:%s)", paste0(sources, collapse = "|"))
@@ -97,7 +100,7 @@ pathToRegexp <- function(
   finally <- if (end) "$" else paste0("(?=", escape(delimiter), "|$)")
 
   pattern <- paste0(flags, pattern, finally)
-  pattern
+  list(pattern = pattern, keys = keys)
 }
 
 
@@ -149,8 +152,8 @@ toRegExpSource <- function(
         result <- paste0(result, "([\\s\\S]+)")
       }
 
-      # keys <- append(keys, list(token))
-      keys <- c(keys, token)
+      keys <- append(keys, list(token))
+      # keys <- c(keys, token)
       backtrack <- ""
       isSafeSegmentParam <- FALSE
 
@@ -158,6 +161,7 @@ toRegExpSource <- function(
     }
   }
 
+  result <- list(sources = result, keys = keys)
   result
 }
 
