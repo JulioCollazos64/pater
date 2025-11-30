@@ -13,5 +13,5 @@ stringifyTokens(tokens)
 A character vector of length 1.
 }
 \description{
-The inverse of the \code{\link[=parse]{parse()}}
+The inverse of the \code{\link[=parse]{parse()}} function.
 }

@@ -1,6 +1,6 @@
 #' From `tokenData` object to a character vector
 #'
-#' The inverse of the [parse()]
+#' The inverse of the [parse()] function.
 #' @param tokens An object of class `tokenData`
 #' @return A character vector of length 1.
 #' @export
