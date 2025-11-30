@@ -63,3 +63,16 @@ negate <- function(delimiter, backtrack) {
   }
   paste0("(?:(?!", escape(backtrack), "|", escape(delimiter), ")[\\s\\S])")
 }
+
+#' @noRd
+#' @keywords internal
+extract <- function(string, regex) {
+  regmatches(
+    x = string,
+    m = regexec(
+      regex,
+      string,
+      perl = TRUE
+    )
+  )[[1]]
+}
