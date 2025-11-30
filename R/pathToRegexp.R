@@ -14,68 +14,69 @@
 #' @return A list with two elements: a regular expression and a list of keys.
 #' @examples
 #' path <- "/hello/world"
-#' regex <- pathToRegexp(path)
+#' regex <- pathToRegexp(path)$pattern
 #' grepl(regex,"/hello/world", perl = TRUE)
 #' grepl(regex,"/hello/world/", perl = TRUE)
 #'
 #' path <- "/hello/:world"
-#' regex <- pathToRegexp(path)
+#' regex <- pathToRegexp(path)$pattern
 #' grepl(regex, "/hello/world", perl = TRUE)
 #' grepl(regex, "/hello/path", perl = TRUE)
 #'
 #'
 #' # Taken from https://expressjs.com/en/guide/routing.html
 #' path <- "/flights/:from-:to"
-#' regex <- pathToRegexp(path)
+#' regex <- pathToRegexp(path)$pattern
 #' grepl(regex, "/flights/a-b", perl = TRUE)
 #' grepl(regex, "/flights/a-b/", perl = TRUE)
 #'
 #' # Taken from https://expressjs.com/en/guide/routing.html
 #' path <- "/users/:userId/books/:bookId"
-#' regex <- pathToRegexp(path)
+#' regex <- pathToRegexp(path)$pattern
 #' grepl(regex, "/users/1/books/2", perl = TRUE)
 #' grepl(regex, "/users/1/books/2/", perl = TRUE)
 #'
 #' path <- "/plantae/:genus.:species"
-#' regex <- pathToRegexp(path)
+#' regex <- pathToRegexp(path)$pattern
 #' grepl(regex, "/plantae/a.b", perl = TRUE)
 #' grepl(regex, "/plantae/a.b/", perl = TRUE)
 #'
 #' # Will match any route that starts with "/public/"
 #' path <- "/public/*files"
-#' regex <- pathToRegexp(path)
+#' regex <- pathToRegexp(path)$pattern
 #' grepl(regex,"/public/format1", perl = TRUE)
 #' grepl(regex,"/public/format2/format3", perl = TRUE)
 #'
 #' # trailing
 #' path <- "/user/:userId"
-#' regex <- pathToRegexp(path, trailing = FALSE)
+#' regex <- pathToRegexp(path, trailing = FALSE)$pattern
 #' grepl(regex, "/user/1", perl = TRUE) # TRUE
 #' grepl(regex, "/users/1/", perl = TRUE) # FALSE
 #'
 #' # sensitive
 #' path <- "/user"
-#' regex <- pathToRegexp(path, sensitive = TRUE)
+#' regex <- pathToRegexp(path, sensitive = TRUE)$pattern
 #' grepl(regex, "/user", perl = TRUE) # TRUE
 #' grepl(regex, "/USER", perl = TRUE) # FALSE
 #'
 #' # end
 #' path <- "/users"
-#' regex1 <- pathToRegexp(path, trailing = FALSE, end = FALSE)
-#' regex2 <- pathToRegexp(path, trailing = FALSE, end = TRUE)
+#' regex1 <- pathToRegexp(path, trailing = FALSE, end = FALSE)$pattern
+#' regex2 <- pathToRegexp(path, trailing = FALSE, end = TRUE)$pattern
 #' if(require("stringr")){
 #'   str_extract("/users////", regex1) # "/users"
 #'   str_extract("/users////", regex2) # NA
 #' }
 #'
 #' @export
-pathToRegexp <- function(
+pathToRegexp <- fu$patternnction(
   path,
   end = TRUE,
   sensitive = FALSE,
   trailing = TRUE,
   delimiter = "/"
-) {
+)
+{
   # --------------------------------------------------------
   keys <- vector(mode = "list")
   flags <- if (sensitive) "" else "(?i)"
@@ -86,7 +87,6 @@ pathToRegexp <- function(
   for (input in pathsToList(path)) {
     data <- if (isTokenData(input)) input else parse(input)
     for (tokens in flatten(data)) {
-      browser()
       new <- toRegExpSource(tokens, delimiter, keys)
       sources <- c(sources, new$sources)
       keys <- new$keys
