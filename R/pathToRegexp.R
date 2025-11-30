@@ -1,10 +1,73 @@
-#' Build a regular expression for matching strings against paths.
-#'
-#' @examples
-#' # example code
+#' Build a regular expression for matching strings against pathnames
 #'
 #' @param path A character vector, TokenData, or
-#' an array of strings and TokenData objects.
+#' a list of strings and TokenData objects.
+#' @param end A logical vector of length 1. Whether to add a construct to the
+#' regular expression to check for a complete end of string match. Defaults to TRUE.
+#' @param delimiter A character vector of length 1. Specifies the delimiter
+#' for the path segments. Defaults to "/"
+#' @param trailing A logical vector of length 1. Whether or not match
+#' trailing path. Defaults to TRUE.
+#'
+#' @returns A regular expression.
+#'
+#'  @examples
+#' path <- "/hello/world"
+#' regex <- pathToRegexp(path)
+#' grepl(regex,"/hello/world", perl = TRUE)
+#' grepl(regex,"/hello/world/", perl = TRUE)
+#'
+#' path <- "/hello/:world"
+#' regex <- pathToRegexp(path)
+#' grepl(regex, "/hello/world", perl = TRUE)
+#' grepl(regex, "/hello/path", perl = TRUE)
+#'
+#'
+#' # Taken from https://expressjs.com/en/guide/routing.html
+#' path <- "/flights/:from-:to"
+#' regex <- pathToRegexp(path)
+#' grepl(regex, "/flights/a-b", perl = TRUE)
+#' grepl(regex, "/flights/a-b/", perl = TRUE)
+#'
+#' # Taken from https://expressjs.com/en/guide/routing.html
+#' path <- "/users/:userId/books/:bookId"
+#' regex <- pathToRegexp(path)
+#' grepl(regex, "/users/1/books/2", perl = TRUE)
+#' grepl(regex, "/users/1/books/2/", perl = TRUE)
+#'
+#' path <- "/plantae/:genus.:species"
+#' regex <- pathToRegexp(path)
+#' grepl(regex, "/plantae/a.b", perl = TRUE)
+#' grepl(regex, "/plantae/a.b/", perl = TRUE)
+#'
+#' # Will match any route that starts with "/public/"
+#' path <- "/public/*files"
+#' regex <- pathToRegexp(path)
+#' grepl(regex,"/public/format1", perl = TRUE)
+#' grepl(regex,"/public/format2/format3", perl = TRUE)
+#'
+#' # trailing
+#' path <- "/user/:userId"
+#' regex <- pathToRegexp(path, trailing = FALSE)
+#' grepl(regex, "/user/1", perl = TRUE) # TRUE
+#' grepl(regex, "/users/1/", perl = TRUE) # FALSE
+#'
+#' # sensitive
+#' path <- "/user"
+#' regex <- pathToRegexp(path, sensitive = TRUE)
+#' grepl(regex, "/user", perl = TRUE) # TRUE
+#' grepl(regex, "/USER", perl = TRUE) # FALSE
+#'
+#' # end
+#' path <- "/users"
+#' regex1 <- pathToRegexp(path, trailing = FALSE, end = FALSE)
+#' regex2 <- pathToRegexp(path, trailing = FALSE, end = TRUE)
+#' if(require("stringr")){
+#'   str_extract("/users////", regex1) # "/users"
+#'   str_extract("/users////", regex2) # NA
+#' }
+#'
+#' #
 #' @export
 pathToRegexp <- function(
   path,
@@ -26,7 +89,15 @@ pathToRegexp <- function(
       sources <- c(sources, toRegExpSource(tokens, delimiter, keys))
     }
   }
-  sources
+  pattern <- sprintf("^(?:%s)", paste0(sources, collapse = "|"))
+  if (trailing) {
+    pattern <- paste0(pattern, "(?:", escape(delimiter), "$)?")
+  }
+
+  finally <- if (end) "$" else paste0("(?=", escape(delimiter), "|$)")
+
+  pattern <- paste0(flags, pattern, finally)
+  pattern
 }
 
 
@@ -48,7 +119,6 @@ toRegExpSource <- function(
   keys
   # , originalPath # (not implemented)
 ) {
-  # browser()
   result <- ""
   backtrack <- ""
   isSafeSegmentParam <- TRUE
@@ -57,7 +127,7 @@ toRegExpSource <- function(
       result <- paste0(result, escape(token$value))
       backtrack <- paste0(backtrack, token$value)
       if (isFALSE(isSafeSegmentParam)) {
-        isSafeSegmentParam <- grepl(token$value, delimiter, perl = TRUE)
+        isSafeSegmentParam <- grepl(delimiter, token$value, perl = TRUE)
       }
       next
     }
@@ -79,7 +149,8 @@ toRegExpSource <- function(
         result <- paste0(result, "([\\s\\S]+)")
       }
 
-      keys <- append(keys, list(token))
+      # keys <- append(keys, list(token))
+      keys <- c(keys, token)
       backtrack <- ""
       isSafeSegmentParam <- FALSE
 
