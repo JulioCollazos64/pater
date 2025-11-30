@@ -69,14 +69,13 @@
 #' }
 #'
 #' @export
-pathToRegexp <- fu$patternnction(
+pathToRegexp <- function(
   path,
   end = TRUE,
   sensitive = FALSE,
   trailing = TRUE,
   delimiter = "/"
-)
-{
+) {
   # --------------------------------------------------------
   keys <- vector(mode = "list")
   flags <- if (sensitive) "" else "(?i)"
