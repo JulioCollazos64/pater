@@ -15,7 +15,7 @@ regexFirst <- function() {
 #' @seealso [make.names()] for official documentation.
 #'
 regexOthers <- function() {
-  "[a-zA-Z0-9\\p{L}._]"
+  "[a-zA-Z0-9\\p{L}_]"
 }
 
 #' Escape some regex keywords
