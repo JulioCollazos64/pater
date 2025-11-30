@@ -49,7 +49,8 @@ match <- function(path, decode, delimiter = "/", ...) {
     params <- list()
     i <- 1
     while (i < length(m)) {
-      if (is.null(m[i])) {
+      if (identical(m[i], "")) {
+        i <- i + 1
         next
       }
 
