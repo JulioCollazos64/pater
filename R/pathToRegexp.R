@@ -4,6 +4,8 @@
 #' a list of strings and TokenData objects.
 #' @param end A logical vector of length 1. Whether to add a construct to the
 #' regular expression to check for a complete end of string match. Defaults to TRUE.
+#' @param sensitive A logical vector of length 1. Whether resulting regex
+#' will be case sensitive. Defaults to FALSE.
 #' @param delimiter A character vector of length 1. Specifies the delimiter
 #' for the path segments. Defaults to "/"
 #' @param trailing A logical vector of length 1. Whether or not match
