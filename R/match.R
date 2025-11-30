@@ -1,6 +1,3 @@
-path <- "/users/:userId/books/:bookId/*bro"
-regularpath <- "/users/User1/books/Id1/2/3"
-
 #' Build a function for matching pathnames against a pathname specification
 #'
 #' @param path A character vector of length 1. A pathname specification.
