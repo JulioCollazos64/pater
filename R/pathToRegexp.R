@@ -11,9 +11,8 @@
 #' @param trailing A logical vector of length 1. Whether or not match
 #' trailing path. Defaults to TRUE.
 #'
-#' @returns A regular expression.
-#'
-#'  @examples
+#' @return A regular expression.
+#' @examples
 #' path <- "/hello/world"
 #' regex <- pathToRegexp(path)
 #' grepl(regex,"/hello/world", perl = TRUE)
@@ -69,7 +68,6 @@
 #'   str_extract("/users////", regex2) # NA
 #' }
 #'
-#' #
 #' @export
 pathToRegexp <- function(
   path,
