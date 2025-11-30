@@ -5,10 +5,10 @@
 #' @details
 #' TODO
 #' @param path A character vector of length 1.
-#' @param encodePath A function to encode characters, defaults to `URLencode`.
+#' @param encodePath A function to encode characters, defaults to the `identity` function.
 #' @returns An object of class `tokenData`.
 #' @export
-parse <- function(path, encodePath = utils::URLencode) {
+parse <- function(path, encodePath = identity) {
   chars <- strsplit(path, "")[[1]]
   stopifnot(
     "`path` must be of length 1" = length(path) == 1,
