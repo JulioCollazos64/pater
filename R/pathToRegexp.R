@@ -10,6 +10,7 @@
 #' for the path segments. Defaults to "/"
 #' @param trailing A logical vector of length 1. Whether or not match
 #' trailing path. Defaults to TRUE.
+#' @param ... Additional parameters for `parse`.
 #'
 #' @return A list with two elements: a regular expression and a list of keys.
 #' @examples
@@ -74,7 +75,8 @@ pathToRegexp <- function(
   end = TRUE,
   sensitive = FALSE,
   trailing = TRUE,
-  delimiter = "/"
+  delimiter = "/",
+  ...
 ) {
   # --------------------------------------------------------
   keys <- vector(mode = "list")
@@ -84,7 +86,7 @@ pathToRegexp <- function(
   # so that it doesn't grow each time this function is called!
   environment(pathsToList)$init <- NULL
   for (input in pathsToList(path)) {
-    data <- if (isTokenData(input)) input else parse(input)
+    data <- if (isTokenData(input)) input else parse(input, ...)
     for (tokens in flatten(data)) {
       new <- toRegExpSource(tokens, delimiter, keys)
       sources <- c(sources, new$sources)

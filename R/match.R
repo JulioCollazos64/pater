@@ -3,7 +3,7 @@
 #' @param path A character vector of length 1. A pathname specification.
 #' @param decode A function for decoding a string or FALSE to disable it.
 #' @param delimiter A character vector of length 1. Specifies the delimiter for the path segments.
-#' @param ... Additional paramters for `pathToRegexp`.
+#' @param ... Additional parameters for `pathToRegexp` or `parse`.
 #' @return A function.
 #' @examples
 #'
