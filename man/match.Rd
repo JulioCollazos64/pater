@@ -28,4 +28,9 @@ fn <- match(path)
 p <- fn("/users/User1/books/Id1/2/3")
 p
 
+path <- "/path/resource"
+fn <- match(path)
+fn("/resource/path")
+
+
 }

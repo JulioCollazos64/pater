@@ -16,18 +16,7 @@ A character vector of length 1.
 The inverse of the \code{\link[=parse]{parse()}} function.
 }
 \examples{
-tokens <- buildTokenData(
-  list(
-    list(
-      type = "text",
-      value = "/path/to/resource/"
-    ),
-   list(
-      type = "param",
-      name = "Id"
-    )
-  )
-)
+tokens <- parse("/path/to/resource/:Id")
 path <- stringifyTokens(tokens)
 identical(path, "/path/to/resource/:Id") # TRUE
 
