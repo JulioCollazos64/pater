@@ -7,14 +7,15 @@ Authors@R:
         person("path-to-regexp contributors", role = "cph",
         comment = "see <https://github.com/pillarjs/path-to-regexp/graphs/contributors>")
     )
-Description: R's implementation of the Javascript library 'path-to-regexp'. It has been written to provide R web frameworks features such as parameter matching, optional parameters and parameter wildcards.
+Description: R's implementation of the JavaScript library 'path-to-regexp',
+ it aims to provide R web frameworks features such as parameter handling 
+ among other URL path utilities.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Suggests: 
-    testthat (>= 3.0.0)
-    stringr
+    testthat (>= 3.0.0), stringr
 Config/testthat/edition: 3
 Imports: 
     utils

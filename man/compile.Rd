@@ -6,6 +6,28 @@
 \usage{
 compile(path, delimiter = "/", encode)
 }
+\arguments{
+\item{path}{A character vector or a \code{tokenData} object.}
+
+\item{delimiter}{A character vector of length 1. Specifies the delimiter for
+the path segments.}
+
+\item{encode}{Function to encode input strings. Defaults to utils::URLencode with
+the parameter reserved set to TRUE.}
+}
+\value{
+A function.
+}
 \description{
-The function will have one parameter in which you can specify the parameters
+The output function will have one parameter in which you can specify the parameters using
+a named list.
+}
+\examples{
+
+toPath <- compile("/path/to/resource/:Id")
+toPath(list(Id = "2"))
+
+toPath <- compile("public/*files")
+toPath(list(files = c("js", "hi.js")))
+
 }

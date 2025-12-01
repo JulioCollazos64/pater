@@ -4,19 +4,68 @@
 \alias{parse}
 \title{Decompose a pathname}
 \usage{
-parse(path, encodePath = utils::URLencode)
+parse(path, encodePath = identity)
 }
 \arguments{
 \item{path}{A character vector of length 1.}
 
-\item{encodePath}{A function to encode characters, defaults to \code{URLencode}.}
+\item{encodePath}{A function to encode characters, defaults to the \code{identity} function.}
 }
 \value{
 An object of class \code{tokenData}.
 }
 \description{
-This function decomposes a given pathname into meaningful tokens.
+This function decomposes a given pathname into meaningful tokens, see Details.
 }
 \details{
-TODO
+The \code{parse} function returns a \code{tokenData} object which contains a list of tokens from the
+path you provided. A token is a meaningful portion of a given pathname, it can contain
+so called "parameters", which are placeholders that will be filled when a new HTTP
+request comes in, these parameters may or not expand a whole path segment, meaning
+that two parameters can share the same path segment, a token type can be any of
+the following:
+
+\itemize{
+
+\item{text: Represents a fixed path portion , e.g "/path/" or "/path/resource".}
+\item{param: Represent a dynamic path portion, e.g. "/path/:Id" or
+"/path/:from-:to". Must be named.}
+\item{wildcard: Similar to param but can "expand" itself into more than one path
+segment, e.g. "/public/*files". Must be named}
+\item{group: Represents an optional path portion, either an optional parameter
+or optional text, e.g. "/path\{/:optional\}" or "/user\{s\}".}
+}
+
+\code{pater} uses this special syntax as some regex features are not available, e.g.
+"/users?" doesn't work, this was done in the original implementation for security
+reasons. If you want to specify one of these in your path use double backlash,
+"/users\\?"
+}
+\examples{
+
+# A "fixed" path
+path <- "/path/resource"
+parse(path)
+
+# Parameters
+path <- "/path/to/:resourceId"
+parse(path)
+
+# Wildcard
+path <- "/path/*files"
+parse(path)
+
+# Group or "optional"
+path <- "/path{s}"
+parse(path)
+
+# Error because of regex feature not supported
+\dontrun{
+ path <- "/paths?"
+ parse(path)
+}
+
+# Escape it
+path <- "/paths\\\\?"
+parse(path)
 }

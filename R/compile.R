@@ -1,6 +1,22 @@
 #' Build a function for transforming parameters into a valid path
 #'
-#' The function will have one parameter in which you can specify the parameters
+#' The output function will have one parameter in which you can specify the parameters using
+#' a named list.
+#'
+#' @param path A character vector or a `tokenData` object.
+#' @param delimiter A character vector of length 1. Specifies the delimiter for
+#'  the path segments.
+#' @param encode Function to encode input strings. Defaults to utils::URLencode with
+#' the parameter reserved set to TRUE.
+#' @returns A function.
+#' @examples
+#'
+#' toPath <- compile("/path/to/resource/:Id")
+#' toPath(list(Id = "2"))
+#'
+#' toPath <- compile("public/*files")
+#' toPath(list(files = c("js", "hi.js")))
+#'
 #' @export
 compile <- function(path, delimiter = "/", encode) {
   if (missing(encode)) {
