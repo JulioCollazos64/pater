@@ -53,7 +53,13 @@ negate <- function(delimiter, backtrack) {
     if (nchar(delimiter) < 3) {
       return(paste0("[^", escape(paste0(delimiter, backtrack)), "]"))
     }
-    return(paste0("(?:(?!", escape(delimiter), ")[^", escape(backtrack), "])"))
+    return(paste0(
+      "(?:(?!",
+      escape(delimiter),
+      ")[^",
+      escape(if (!nzchar(backtrack)) "\n" else backtrack), # In R [^] is not valid, let's just use this random value for now.
+      "])"
+    ))
   }
 
   if (nchar(delimiter) < 3) {
