@@ -4,18 +4,7 @@
 #' @param tokens An object of class `tokenData`
 #' @return A character vector of length 1.
 #' @examples
-#' tokens <- buildTokenData(
-#'   list(
-#'     list(
-#'       type = "text",
-#'       value = "/path/to/resource/"
-#'     ),
-#'    list(
-#'       type = "param",
-#'       name = "Id"
-#'     )
-#'   )
-#' )
+#' tokens <- parse("/path/to/resource/:Id")
 #' path <- stringifyTokens(tokens)
 #' identical(path, "/path/to/resource/:Id") # TRUE
 #'
