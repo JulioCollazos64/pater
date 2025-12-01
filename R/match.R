@@ -13,21 +13,22 @@
 #' p
 #'
 #' @export
-match <- function(path, decode, delimiter = "/", ...) {
+match <- function(path, decode = NULL, delimiter = "/", ...) {
+  patter <- pathToRegexp(path, delimiter = delimiter, ...)
+  regex <- patter$pattern
+  keys <- patter$keys
   if (missing(decode)) {
     decode <- function(url) {
       utils::URLdecode(url)
     }
   }
-  if (isFALSE(decode)) {
-    decode <- identity
-  }
-
-  patter <- pathToRegexp(path, delimiter = delimiter, ...)
-  regex <- patter$pattern
-  keys <- patter$keys
 
   f <- function(key) {
+    if (isFALSE(decode)) {
+      decode <- identity
+      return(decode)
+    }
+
     if (key$type == "param") {
       return(decode)
     }
