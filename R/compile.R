@@ -36,7 +36,7 @@ compile <- function(path, delimiter = "/", encode) {
   )
   fn <- tokensToFunction(data, delimiter, encode)
 
-  f <- function(params) {
+  g <- function(params) {
     result <- fn(params)
     path <- result[1]
     missing <- result[-1]
@@ -125,7 +125,7 @@ tokenToFunction <- function(token, delimiter, encode = identity) {
       }
 
       prev <- Map(
-        f = function(val, index) {
+        function(val, index) {
           if (!(is.character(val) && length(val) == 1)) {
             stop(
               "Expected ",
