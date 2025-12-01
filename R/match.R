@@ -12,6 +12,11 @@
 #' p <- fn("/users/User1/books/Id1/2/3")
 #' p
 #'
+#' path <- "/path/resource"
+#' fn <- match(path)
+#' fn("/resource/path")
+#'
+#'
 #' @export
 match <- function(path, decode = NULL, delimiter = "/", ...) {
   patter <- pathToRegexp(path, delimiter = delimiter, ...)
