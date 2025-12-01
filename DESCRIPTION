@@ -11,6 +11,8 @@ Description: R's implementation of the JavaScript library 'path-to-regexp',
  it aims to provide R web frameworks features such as parameter handling 
  among other URL path utilities.
 License: MIT + file LICENSE
+URL: https://github.com/JulioCollazos64/pater
+BugReports: https://github.com/JulioCollazos64/pater/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
