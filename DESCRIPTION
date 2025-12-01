@@ -1,6 +1,6 @@
 Package: pater
 Title: Turn a URL pathname into a regular expression
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     c(
         person("Julio", "Collazos", , "amarullazo626@gmail.com", role = c("aut", "cre")),
