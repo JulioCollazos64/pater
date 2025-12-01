@@ -49,14 +49,14 @@ escape <- function(value) {
 #' @noRd
 #' @keywords internal
 negate <- function(delimiter, backtrack) {
-  if (length(backtrack) < 2) {
-    if (length(delimiter)) {
+  if (nchar(backtrack) < 3) {
+    if (nchar(delimiter) < 3) {
       return(paste0("[^", escape(paste0(delimiter, backtrack)), "]"))
     }
-    return(paste0("(?:(?!", escape(delimiter), ")[^", escape(backtrack)))
+    return(paste0("(?:(?!", escape(delimiter), ")[^", escape(backtrack), "])"))
   }
 
-  if (length(delimiter) < 2) {
+  if (nchar(delimiter) < 3) {
     return(
       paste0("(?:(?!", escape(backtrack), ")[^", escape(delimiter), "])")
     )
