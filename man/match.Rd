@@ -4,12 +4,13 @@
 \alias{match}
 \title{Build a function for matching pathnames against a pathname specification}
 \usage{
-match(path, decode = NULL, delimiter = "/", ...)
+match(path, decode = utils::URLdecode, delimiter = "/", ...)
 }
 \arguments{
 \item{path}{A character vector of length 1. A pathname specification.}
 
-\item{decode}{A function for decoding a string or FALSE to disable it.}
+\item{decode}{A function for decoding a string or FALSE to disable it.
+Defaults to \code{utils::URLdecode}}
 
 \item{delimiter}{A character vector of length 1. Specifies the delimiter for the path segments.}
 

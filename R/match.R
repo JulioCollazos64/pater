@@ -2,6 +2,7 @@
 #'
 #' @param path A character vector of length 1. A pathname specification.
 #' @param decode A function for decoding a string or FALSE to disable it.
+#' Defaults to `utils::URLdecode`
 #' @param delimiter A character vector of length 1. Specifies the delimiter for the path segments.
 #' @param ... Additional parameters for `pathToRegexp` or `parse`.
 #' @return A function.
@@ -18,15 +19,10 @@
 #'
 #'
 #' @export
-match <- function(path, decode = NULL, delimiter = "/", ...) {
+match <- function(path, decode = utils::URLdecode, delimiter = "/", ...) {
   patter <- pathToRegexp(path, delimiter = delimiter, ...)
   regex <- patter$pattern
   keys <- patter$keys
-  if (missing(decode)) {
-    decode <- function(url) {
-      utils::URLdecode(url)
-    }
-  }
 
   f <- function(key) {
     if (isFALSE(decode)) {
