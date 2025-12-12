@@ -33,9 +33,17 @@ original.
 
 ## Installation
 
-You can install the development version of pater like so:
+You can install the stable version of `pater` from CRAN with:
+
+``` r
+install.packages("pater")
+#> Installing package into '/tmp/RtmpeiTkU0/temp_libpatha14e5a624158'
+#> (as 'lib' is unspecified)
+```
+
+You can install the development version of `pater` like so:
 
 ``` r
 # install.packages("pak")
-# pak::pak("JulioCollazos64/pater")
+pak::pak("JulioCollazos64/pater")
 ```

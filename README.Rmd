@@ -35,9 +35,15 @@ possible to the original.
 
 ## Installation
 
-You can install the development version of pater like so:
+You can install the stable version of `pater` from CRAN with:
+
+```{r}
+install.packages("pater")
+```
+
+You can install the development version of `pater` like so:
 
 ``` r
 # install.packages("pak")
-# pak::pak("JulioCollazos64/pater")
+pak::pak("JulioCollazos64/pater")
 ```
