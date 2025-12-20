@@ -8,7 +8,7 @@
 #'  the path segments.
 #' @param encode Function to encode input strings. Defaults to utils::URLencode with
 #' the parameter reserved set to TRUE.
-#' @returns A function.
+#' @returns A function, invisibly.
 #' @examples
 #'
 #' toPath <- compile("/path/to/resource/:Id")
@@ -50,6 +50,7 @@ compile <- function(path, delimiter = "/", encode) {
     }
     path
   }
+  invisible(g)
 }
 
 

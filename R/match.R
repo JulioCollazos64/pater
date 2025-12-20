@@ -5,7 +5,7 @@
 #' Defaults to `utils::URLdecode`
 #' @param delimiter A character vector of length 1. Specifies the delimiter for the path segments.
 #' @param ... Additional parameters for `pathToRegexp` or `parse`.
-#' @return A function.
+#' @return A function, invisibly.
 #' @examples
 #'
 #' path <- "/users/:userId/books/:bookId/*public"
@@ -42,29 +42,32 @@ match <- function(path, decode = utils::URLdecode, delimiter = "/", ...) {
     }
   }
   decoders <- lapply(keys, f)
-  function(input) {
-    m <- extract(input, regex)
-    if (!length(m)) {
-      return(FALSE)
-    }
-    path <- m[1]
-    params <- list()
-    i <- 2
-    while (i <= length(m)) {
-      if (identical(m[i], "")) {
-        i <- i + 1
-        next
+
+  invisible(
+    function(input) {
+      m <- extract(input, regex)
+      if (!length(m)) {
+        return(FALSE)
       }
+      path <- m[1]
+      params <- list()
+      i <- 2
+      while (i <= length(m)) {
+        if (identical(m[i], "")) {
+          i <- i + 1
+          next
+        }
 
-      key <- keys[[i - 1]]
-      decoder <- decoders[[i - 1]]
+        key <- keys[[i - 1]]
+        decoder <- decoders[[i - 1]]
 
-      params[[key$name]] <- unlist(decoder(m[i]), use.names = FALSE)
-      i <- i + 1
+        params[[key$name]] <- unlist(decoder(m[i]), use.names = FALSE)
+        i <- i + 1
+      }
+      list(
+        path = path,
+        params = params
+      )
     }
-    list(
-      path = path,
-      params = params
-    )
-  }
+  )
 }

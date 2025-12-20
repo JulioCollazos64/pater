@@ -17,7 +17,7 @@ Defaults to \code{utils::URLdecode}}
 \item{...}{Additional parameters for \code{pathToRegexp} or \code{parse}.}
 }
 \value{
-A function.
+A function, invisibly.
 }
 \description{
 Build a function for matching pathnames against a pathname specification

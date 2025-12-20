@@ -16,7 +16,7 @@ the path segments.}
 the parameter reserved set to TRUE.}
 }
 \value{
-A function.
+A function, invisibly.
 }
 \description{
 The output function will have one parameter in which you can specify the parameters using
