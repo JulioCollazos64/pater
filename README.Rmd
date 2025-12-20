@@ -47,3 +47,35 @@ You can install the development version of `pater` like so:
 # install.packages("pak")
 pak::pak("JulioCollazos64/pater")
 ```
+
+# Common patterns
+
+* Parameters
+
+```{r}
+library(pater)
+fn <- match("/path/:foo")
+fn("/path/bar")
+
+fn <- match("/path/:foo-:bar")
+fn("/path/foo-bar")
+
+```
+
+* Optional parameters
+
+```{r}
+library(pater)
+fn <- match("/foo{/:bar}")
+fn("/foo")
+fn("/foo/bar")
+
+```
+
+* Wildcard
+
+```{r}
+library(pater)
+fn <- match("/*foo")
+fn("/foo/bar")
+```
