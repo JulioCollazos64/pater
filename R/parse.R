@@ -76,8 +76,6 @@ parse <- function(path, encodePath = identity) {
     regex_start <- regexFirst()
     regex_next <- regexOthers()
 
-    stopifnot("Not enough data!" = !is.na(char[index]))
-
     if (grepl(regex_start, char[index], perl = TRUE)) {
       start <- index
       while (grepl(regex_next, char[index], perl = TRUE)) {
