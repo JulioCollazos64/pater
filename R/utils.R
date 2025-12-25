@@ -57,7 +57,9 @@ negate <- function(delimiter, backtrack) {
       "(?:(?!",
       escape(delimiter),
       ")[^",
-      escape(if (!nzchar(backtrack)) "\n" else backtrack), # In R [^] is not valid, let's just use this random value for now.
+      escape(if (!nzchar(backtrack)) "\n" else backtrack),
+      # In R [^] is not valid, let's just use this random value for now.
+      # see: https://www.regular-expressions.info/charclass.html
       "])"
     ))
   }
