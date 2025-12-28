@@ -4,6 +4,8 @@
 
 <!-- badges: start -->
 
+[![CRAN status](https://www.r-pkg.org/badges/version/pater)](https://CRAN.R-project.org/package=pater)
+
 <!-- badges: end -->
 
 The goal of pater is to decompose a given pathname into meaningful tokens that will be later used to construct a regular expression useful when matching an HTTP request to a route handler.
